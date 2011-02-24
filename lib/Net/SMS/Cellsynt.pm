@@ -213,6 +213,11 @@ sub sender {
 
 http://cellsynt.com/
 
+=head1 AVAILABILITY
+
+Latest stable version is available on CPAN. Current development
+version is available on https://github.com/olof/Net-SMS-Cellsynt.
+
 =head1 COPYRIGHT
 
 Copyright (c) 2009-2011,  Olof 'zibri' Johansson <olof@cpan.org>
