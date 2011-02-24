@@ -16,8 +16,8 @@
 
 =item * The GPL-2 text in LICENSE was replaced with GPL-1. 
 
-        Note that this isn't a change in what license the module is relased
-	under. It is, and has always been, Artistic License or GPL-1 or later.
+Note that this isn't a change in what license the module is relased
+under. It is, and has always been, Artistic License or GPL-1 or later.
 
 =back
 
