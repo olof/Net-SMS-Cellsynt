@@ -21,3 +21,11 @@ VERSION NUMBERING
   The version numbers should be read as a floating point value,
   where 0.9 is higher than 0.89.
 
+COPYRIGHT 
+ 
+  Copyright (c) 2009-2011,  Olof 'zibri' Johansson <olof@cpan.org>
+  All rights reserved.
+
+  This program is free software; you can redistribute it and/or 
+  modify it under the same terms as Perl itself.
+
