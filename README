@@ -1,4 +1,4 @@
-Net::SMS::Cellsynt lets you send SMS thruogh Cellsynt's
+Net::SMS::Cellsynt lets you send SMS through Cellsynt's
 SMS gateway, from within your Perl script/application.
 
 INSTALLATION
@@ -19,5 +19,5 @@ STATUS
 VERSION NUMBERING
 
   The version numbers should be read as a floating point value,
-  where 0.9 is less than 0.89.
+  where 0.9 is higher than 0.89.
 
