@@ -1,0 +1,23 @@
+=encoding utf8
+
+=head1 Changes in Net::SMS::Cellsynt
+
+=head2 0.21
+
+=head3 Documentation
+
+=over
+
+=item * Found out that I didn't have a changelog! Now I have. (2011-02-24)
+
+=item * Change of e-mail address. From zibri to olof@cpan.org (2011-02-24)
+
+=item * Documented availability (CPAN, Github) in POD and README (2011-02-24)
+
+=item * The GPL-2 text in LICENSE was replaced with GPL-1. 
+
+        Note that this isn't a change in what license the module is relased
+	under. It is, and has always been, Artistic License or GPL-1 or later.
+
+=back
+
