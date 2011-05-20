@@ -193,7 +193,8 @@ sub send_sms {
 
 =head2 sender(origtype=>$origtype, orig=>$orig)
 
-Update sender. See constructor documentation for valid values.
+Update sender. You can set either or both values. See constructor 
+documentation for valid values.
 
 =cut
 
@@ -203,8 +204,8 @@ sub sender {
 		@_,
 	};
 
-	$self->{origtype} = $param->{origtype};
-	$self->{orig} = $param->{orig};
+	$self->{origtype} = $param->{origtype} if $param->{origtype};
+	$self->{orig} = $param->{orig} if $param->{orig};
 }
 
 1;
