@@ -131,8 +131,9 @@ telephonenumber 0700123456 will translate into 0046700123456 --- it is
 the caller's responsibility to convert numbers into this format before
 calling send_sms.
 
-Will return a tracking ID if successfull (or 1 if simulating), or undef
-if an error occurs, and also write the error message to stderr.
+Will return a tracking ID if successful (or the URI if in simulation 
+mode), or undef if an error occurs, and also write the error message 
+to stderr.
 
 =cut
 
@@ -169,7 +170,7 @@ sub send_sms {
 	}
 
 	if($self->{simulate}) {
-		return "ok: simulation $req";
+		return $req;
 	}
 
 	my $body;
@@ -182,12 +183,17 @@ sub send_sms {
 	$curl->perform();
 	close $curld;
 
-	if($body=~/^OK: (.*)/) {
-		return "ok: $1";
+	if(not defined $body) {
+		print STDERR "Error: SMS gateway does not follow protocol";
+		return undef;
+	} elsif($body =~ /^OK: (.*)/) {
+		return $1;
 	} elsif($body=~/^Error: (.*)/) {
-		return "Error: $1\n";
+		print STDERR "Error: $1";
+		return undef;
 	} else {
-		return "Error: SMS gateway does not follow protocol";
+		print STDERR "Error: SMS gateway does not follow protocol";
+		return undef;
 	}
 }
 
