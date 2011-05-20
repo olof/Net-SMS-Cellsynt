@@ -1,0 +1,11 @@
+Changes in Net::SMS::Cellsynt
+
+0.21 Released: 2011-05-20
+ Documentation
+ * Found out that I didn't have a changelog! Now I have. (2011-02-24) 
+ * Change of e-mail address. From zibri to olof@cpan.org (2011-02-24) 
+ * Documented availability (CPAN, Github) in POD and README (2011-02-24) 
+ * The GPL-2 text in LICENSE was replaced with GPL-1. (2011-02-24)
+
+   Note that this isn't a change in what license the module is relased
+   under. It is, and has always been, Artistic License or GPL-1 or later.
