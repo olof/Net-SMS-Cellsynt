@@ -24,8 +24,8 @@ if($#ARGV != 1) {
 }
 
 my $sms = Net::SMS::Cellsynt->new(
-	username=>'olofjohansson',
-	password=>'y3YsRaVG',
+	username=>'zibri',
+	password=>'s3kr3t',
 	origtype=>'alpha',
 	orig=>'zibri',
 	#test=>1,
