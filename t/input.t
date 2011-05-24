@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use Test::More tests => 4;
+use Test::More tests => 8;
 use Net::SMS::Cellsynt;
 
 my $sms = Net::SMS::Cellsynt->new(
@@ -8,22 +8,40 @@ my $sms = Net::SMS::Cellsynt->new(
 	password=>'password',
 	origtype=>'alpha',
 	orig=>'test',
-	simulate=>1,
+	test=>1,
 );
 
 # correct input
+my $hash = $sms->send_sms(to=>'0046700123456', text=>'hej');
 is(
-	$sms->send_sms(to=>'0046700123456', text=>'hej'),
-	"ok: simulation https://se-1.cellsynt.net/sms.php?".
-	"username=username&password=password&destination=".
-	"0046700123456&text=hej&expiry=&originatortype=alpha&".
-	"originator=test"
+	$hash->{status},
+	'ok-test'
+);
+
+is(
+	$hash->{uri},
+	"https://se-1.cellsynt.net/sms.php?" . join('&',
+		'username=username',
+		'password=password',
+		'destination=0046700123456',
+		'text=hej',
+		'originatortype=alpha',
+		'originator=test'
+	)
 );
 
 # incorrect telephone number format
+$hash = $sms->send_sms(to=>'0700123456', text=>'hej'),
 is(
-	$sms->send_sms(to=>'0700123456', text=>'hej'),
-	"Error: Phone number not in expected format"
+	$hash->{status},
+	'error-internal',
+	"Handling of unexpected phone number formats (status)"
+);
+
+is(
+	$hash->{message},
+	'Phone number not in expected format',
+	"Handling of unexpected phone number formats (message)"
 );
 
 $sms = Net::SMS::Cellsynt->new(
@@ -31,13 +49,21 @@ $sms = Net::SMS::Cellsynt->new(
 	password=>'password',
 	origtype=>'alpha',
 	orig=>'test',
-	simulate=>1,
+	test=>1,
 );
 
 # using example script (username zibri)
+$hash = $sms->send_sms(to=>'0046700123456', text=>'hej'),
 is(
-	$sms->send_sms(to=>'0046700123456', text=>'hej'),
-	"Error: Don't run the example script as is"
+	$hash->{status},
+	'error-internal',
+	"Don't run the example script as is (status)"
+);
+
+is(
+	$hash->{message},
+	"Don't run the example script as is",
+	"Don't run the example script as is (message)"
 );
 
 $sms = Net::SMS::Cellsynt->new(
@@ -48,8 +74,16 @@ $sms = Net::SMS::Cellsynt->new(
 	uri=>'http://example.org/'
 );
 
+$hash = $sms->send_sms(to=>'0046700123456', text=>'hej'),
 is(
-	$sms->send_sms(to=>'0046700123456', text=>'hej'),
-	"Error: SMS gateway does not follow protocol"
+	$hash->{status},
+	'error-internal',
+	"Handling of SMS gateways that don't follow protocol (status)"
+);
+
+is(
+	$hash->{message},
+	"SMS gateway does not follow protocol",
+	"Handling of SMS gateways that don't follow protocol (message)"
 );
 

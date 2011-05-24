@@ -5,11 +5,13 @@
 # modify it under the same terms as Perl itself.
 
 package Net::SMS::Cellsynt;
-our $VERSION = 0.21;
+our $VERSION = 0.3;
 use strict;
 use warnings;
 use WWW::Curl::Easy;
+use URI;
 use URI::Escape;
+use URI::QueryParam;
 use Carp;
 
 =pod
@@ -122,18 +124,30 @@ sub new {
 
 =head2 send_sms(to=>$recipient, $text=>"msg")
 
-Will send message "msg" as an SMS to $recipient, unless the object has 
-set the simulate object; then the send_msg will output the URI that 
-would be used to send the SMS.
+Will send message "msg" as an SMS to $recipient, unless the
+object has set the simulate object; then the send_msg will output
+the URI that would be used to send the SMS.
 
-$recipient is a telephone number in international format: The Swedish
-telephonenumber 0700123456 will translate into 0046700123456 --- it is 
-the caller's responsibility to convert numbers into this format before
-calling send_sms.
+$recipient is a telephone number in international format: The
+Swedish telephone number 0700123456 will translate into
+0046700123456 --- it is the caller's responsibility to convert
+numbers into this format before calling send_sms.
 
-Will return a tracking ID if successful (or the URI if in simulation 
-mode), or undef if an error occurs, and also write the error message 
-to stderr.
+The $text parameter is the SMS "body". This must be encoded using
+ISO-8859-1. It must not be longer than 160 characters.
+
+The method will return a hashref containing a status key. If the
+status key is "ok", the key "id" is also present, containing the
+tracking ID supplied by the SMS gateway. If the status key
+matches /error-\w+/, the key "message" is also present. I.e.:
+
+ { status => 'ok', id => 'abcdef123456' }
+ { status => 'error-interal', message => 'example error message' }
+ { status => 'error-gateway', message => 'example error message' }
+
+The module differentiate between errors from the SMS gateway
+provider and internal errors. The message in error-gateway comes
+directly from the provider.
 
 =cut
 
@@ -143,57 +157,85 @@ sub send_sms {
 		@_,
 	};
 
+	my $base = $self->{uri};
+	my $test = $self->{test};
+
 	my $username = $self->{username};
 	my $password = $self->{password};
 	my $origtype = $self->{origtype};
 	my $orig = $self->{orig};
-	my $uri = $self->{uri};
-	my $text = uri_escape($param->{text});
+	#my $text = uri_escape($param->{text});
+	my $text = $param->{text};
+	my $ttl = $param->{ttl};
+	my $concat = $param->{concat};
 
-	my $ttl='&expiry=';
-	$ttl .= $self->{ttl}+time if(exists $self->{ttl});
+	my $dest = $param->{to};
 
-	if(not $param->{to} =~ /^00/) {
-		return "Error: Phone number not in expected format";
+	my $uri = URI->new($base);
+
+	if($dest !~ /^00/) {
+		return { 
+			status => 'error-internal', 
+			message => 'Phone number not in expected format'
+		};
 	}
 
-	my $req = "$uri?username=$username&password=$password".
-	          "&destination=".$param->{to}."&text=$text".
-		  "$ttl&originatortype=$origtype&originator=$orig";
-	if(exists $self->{concat}) {
-		$req .= '&allowconcat='.$self->{concat};
-	}
+	$uri->query_param(username => $username);
+	$uri->query_param(password => $password);
+	$uri->query_param(destination => $dest);
+	$uri->query_param(text => $text);
+	$uri->query_param(originatortype => $origtype);
+	$uri->query_param(originator => $orig);
+
+	$uri->query_param(expiry => $ttl) if defined $ttl;
+	$uri->query_param(concat => $concat) if defined $concat;
 
 	# this username is used in the example script.
 	if($username eq 'zibri') {
-		return "Error: Don't run the example script as is";
+		return { 
+			status => 'error-internal', 
+			message => 'Don\'t run the example script as is',
+		};
 	}
 
-	if($self->{simulate}) {
-		return $req;
+	if($test) {
+		return { 
+			status => 'ok-test',
+			uri => $uri,
+		};
 	}
 
 	my $body;
 
 	my $curl = new WWW::Curl::Easy;
 	open(my $curld, ">", \$body);
-	$curl->setopt(CURLOPT_URL, $req);
+	$curl->setopt(CURLOPT_URL, $uri);
 	$curl->setopt(CURLOPT_WRITEDATA, \$curld);
 	$curl->setopt(CURLOPT_FOLLOWLOCATION, 1);
 	$curl->perform();
 	close $curld;
 
 	if(not defined $body) {
-		print STDERR "Error: SMS gateway does not follow protocol";
-		return undef;
+		return {
+			status => 'error-internal',
+			message => 'SMS gateway does not follow '. 
+			           'protocol (empty body)',
+		};
 	} elsif($body =~ /^OK: (.*)/) {
-		return $1;
+		return { 
+			status => 'ok',
+			uri => $1,
+		};
 	} elsif($body=~/^Error: (.*)/) {
-		print STDERR "Error: $1";
-		return undef;
+		return { 
+			status => 'error-gateway',
+			uri => $1,
+		};
 	} else {
-		print STDERR "Error: SMS gateway does not follow protocol";
-		return undef;
+		return {
+			status => 'error-internal',
+			message => 'SMS gateway does not follow protocol',
+		};
 	}
 }
 

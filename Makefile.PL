@@ -12,6 +12,8 @@ WriteMakefile (
 	
 	PREREQ_PM => {
 		'WWW::Curl::Easy' => 0,
+		'URI' => 0,
+		'URI::QueryParam' => 0,
 		'URI::Escape' => 0,
 	},
 	

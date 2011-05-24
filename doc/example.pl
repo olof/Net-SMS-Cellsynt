@@ -12,6 +12,8 @@
 use strict;
 use warnings;
 use Net::SMS::Cellsynt;
+use Encode::Detect::Detector;
+use Text::Iconv;
 
 if($#ARGV != 1) {
 	print STDERR "Usage: ./example.pl <number> <message>\n\n";
@@ -22,17 +24,31 @@ if($#ARGV != 1) {
 }
 
 my $sms = Net::SMS::Cellsynt->new(
-	username=>'zibri',
-	password=>'foobar',
+	username=>'olofjohansson',
+	password=>'y3YsRaVG',
 	origtype=>'alpha',
 	orig=>'zibri',
+	#test=>1,
 );
+
+my $text = $ARGV[1];
+my $charset = detect($text);
+
+if($charset ne 'ISO-8859-1') {
+	my $conv = Text::Iconv->new($charset, 'ISO-8859-1');
+	$text = $conv->convert($text);
+}
 
 my $ret = $sms->send_sms(
 	to=>$ARGV[0],
-	text=>$ARGV[1],
+	text=>$text,
 );
 
-print STDERR "$ret\n" if($ret=~/^Error:/);
-print STDERR "ok\n" if($ret=~/^ok:/);
+if($ret->{status} =~ /^error/) {
+	print STDERR "$ret->{status}: $ret->{message}\n";
+} elsif($ret->{status} eq 'ok-test') {
+	print STDERR "$ret->{uri}\n";
+} else {
+	print STDERR "ok: $ret->{id}\n";
+}
 

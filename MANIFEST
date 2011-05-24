@@ -7,5 +7,3 @@ MANIFEST			This list of files
 README
 t/distribution.t
 t/input.t
-META.yml                                 Module meta-data (added by MakeMaker)
-SIGNATURE                                Public-key signature (added by MakeMaker)
