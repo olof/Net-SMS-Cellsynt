@@ -5,7 +5,7 @@
 # modify it under the same terms as Perl itself.
 
 package Net::SMS::Cellsynt;
-our $VERSION = 0.3;
+our $VERSION = 0.31;
 use strict;
 use warnings;
 use WWW::Curl::Easy;

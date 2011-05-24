@@ -1,6 +1,15 @@
 Changes in Net::SMS::Cellsynt
 
-0.21 Released: 2011-05-20
+0.31 Released: 2011-05-24
+Oops, the 0.3 release was kinda hastey. The documentation contained
+a real password (changed now :-)) and this changelog was not really
+totally updated.
+
+ Documentation 
+ * Removed a former real password in doc script
+ * Updated old changelog item (correct release date, correct version)
+
+0.3  Released: 2011-05-24
  API
  * API breakage (sorry)
    - Return values from send_sms() are hashrefs with status, see POD
