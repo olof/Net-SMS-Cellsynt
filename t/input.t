@@ -83,7 +83,7 @@ is(
 
 is(
 	$hash->{message},
-	"SMS gateway does not follow protocol",
+	"SMS gateway does not follow protocol (empty body)",
 	"Handling of SMS gateways that don't follow protocol (message)"
 );
 
