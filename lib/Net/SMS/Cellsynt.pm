@@ -206,15 +206,12 @@ sub send_sms {
 	}
 
 	my $body;
-
-	open(my $curld, ">", \$body);
 	$self->{curl}->setopt(CURLOPT_URL, $uri);
-	$self->{curl}->setopt(CURLOPT_WRITEDATA, \$curld);
+	$self->{curl}->setopt(CURLOPT_WRITEDATA, \$body);
 	$self->{curl}->setopt(CURLOPT_FOLLOWLOCATION, 1);
 	$self->{curl}->perform();
-	close $curld;
 
-	if(not defined $body) {
+	if(not $body) {
 		return {
 			status => 'error-internal',
 			message => 'SMS gateway does not follow '.
