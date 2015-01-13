@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # Copyright 2009-2011, Olof Johansson <olof@cpan.org>
-# 
-# This program is free software; you can redistribute it and/or 
+#
+# This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 
 package Net::SMS::Cellsynt;
@@ -23,7 +23,7 @@ Net::SMS::Cellsynt - Send SMS through Cellsynt SMS gateway
 =head1 SYNOPSIS
 
  use Net::SMS::Cellsynt;
- 
+
  $sms = Net::SMS::Cellsynt->new(
         origtype=>'alpha',
         orig=>'zibri',
@@ -40,20 +40,20 @@ Net::SMS::Cellsynt - Send SMS through Cellsynt SMS gateway
 
 Net::SMS::Cellsynt provides a perl object oriented interface to the
 Cellsynt SMS HTTP API, which allows you to send SMS from within your
-script or application. 
+script or application.
 
 To use this module you must have a Cellsynt account.
 
 =head1 CONSTRUCTOR
 
 =head2 new( parameters )
- 
+
 =head3 MANDATORY PARAMETERS
 
 =over 8
 
 =item username => $username
-	
+
 Your Cellsynt username.
 
 =item password => $password
@@ -62,16 +62,16 @@ Your Cellsynt password.
 
 =item origtype => $origtype
 
-Type of originator. This can be either "alpha", where you supply a 
-string in orig parameter that the recpient will see as sender (note 
+Type of originator. This can be either "alpha", where you supply a
+string in orig parameter that the recpient will see as sender (note
 that the recipient cannot answer this types of SMS); numeric, where
 you supply a telephone number in the orig parameter and shortcode
 where you supply a numerical short code for a operator network.
 
 =item orig => $orig
 
-This is the "sender" the recpient sees when recieving the SMS. 
-Depending on the value of origtype this should be a string, a 
+This is the "sender" the recpient sees when recieving the SMS.
+Depending on the value of origtype this should be a string, a
 telephone number or a numerical shortcode. (See origtype)
 
 =back
@@ -89,13 +89,13 @@ operator's value is used. Default is not set.
 =item concat
 
 Setting this to a value above 1 will allow for longer SMS:es to be
-sent. One SMS can use 153 bytes, and with this you can send up to 
+sent. One SMS can use 153 bytes, and with this you can send up to
 6 SMS:es (918 bytes).
 
 =item simulate
 
-If set to a value other than 0, the module will output the URI that 
-would be used if this wasn't a simulation, and return, when callng 
+If set to a value other than 0, the module will output the URI that
+would be used if this wasn't a simulation, and return, when callng
 the B<send_sms> subroutine. Default is 0.
 
 =item uri
@@ -174,8 +174,8 @@ sub send_sms {
 	my $uri = URI->new($base);
 
 	if($dest !~ /^00/) {
-		return { 
-			status => 'error-internal', 
+		return {
+			status => 'error-internal',
 			message => 'Phone number not in expected format'
 		};
 	}
@@ -192,14 +192,14 @@ sub send_sms {
 
 	# this username is used in the example script.
 	if($username eq 'zibri') {
-		return { 
-			status => 'error-internal', 
+		return {
+			status => 'error-internal',
 			message => 'Don\'t run the example script as is',
 		};
 	}
 
 	if($test) {
-		return { 
+		return {
 			status => 'ok-test',
 			uri => $uri,
 		};
@@ -217,16 +217,16 @@ sub send_sms {
 	if(not defined $body) {
 		return {
 			status => 'error-internal',
-			message => 'SMS gateway does not follow '. 
+			message => 'SMS gateway does not follow '.
 			           'protocol (empty body)',
 		};
 	} elsif($body =~ /^OK: (.*)/) {
-		return { 
+		return {
 			status => 'ok',
 			uri => $1,
 		};
 	} elsif($body=~/^Error: (.*)/) {
-		return { 
+		return {
 			status => 'error-gateway',
 			uri => $1,
 		};
@@ -240,7 +240,7 @@ sub send_sms {
 
 =head2 sender(origtype=>$origtype, orig=>$orig)
 
-Update sender. You can set either or both values. See constructor 
+Update sender. You can set either or both values. See constructor
 documentation for valid values.
 
 =cut
@@ -271,8 +271,7 @@ version is available on https://github.com/olof/Net-SMS-Cellsynt.
 Copyright (c) 2009-2011,  Olof 'zibri' Johansson <olof@cpan.org>
 All rights reserved.
 
-This program is free software; you can redistribute it and/or 
+This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
 =cut
-

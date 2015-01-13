@@ -86,4 +86,3 @@ is(
 	"SMS gateway does not follow protocol (empty body)",
 	"Handling of SMS gateways that don't follow protocol (message)"
 );
-
