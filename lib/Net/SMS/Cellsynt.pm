@@ -232,6 +232,13 @@ sub send_sms {
 	} elsif($body=~/^Error: (.*)/) {
 		return {
 			status => 'error-gateway',
+			message => $1,
+
+			# Becuase of a bug in previous versions, we didn't
+			# set a "message" key, but instead, the error text
+			# was reported via the "uri" key. For backwards
+			# compatibility, we'll continue support uri as well,
+			# but this will be removed in a future version.
 			uri => $1,
 		};
 	} else {
