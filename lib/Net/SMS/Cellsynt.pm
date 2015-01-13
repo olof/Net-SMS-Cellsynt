@@ -1,11 +1,11 @@
 #!/usr/bin/perl
-# Copyright 2009-2011, Olof Johansson <olof@cpan.org>
+# Copyright 2009-2011, 2015, Olof Johansson <olof@cpan.org>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 
 package Net::SMS::Cellsynt;
-our $VERSION = 0.31;
+our $VERSION = '0.32';
 use strict;
 use warnings;
 use WWW::Curl::Easy;
@@ -279,7 +279,7 @@ version is available on https://github.com/olof/Net-SMS-Cellsynt.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009-2011,  Olof 'zibri' Johansson <olof@cpan.org>
+Copyright (c) 2009-2011, 2015, Olof 'zibri' Johansson <olof@cpan.org>
 All rights reserved.
 
 This program is free software; you can redistribute it and/or

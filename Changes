@@ -1,5 +1,25 @@
 Changes in Net::SMS::Cellsynt
 
+0.32 Released: 2015-01-18
+
+* Fix issue with empty bodies in responses. This includes a bump
+  of required WWW::Curl::Easy version to 4.14. (Reported by
+  plundra.)
+* Don't create a new WWW::Curl::Easy object for each sms, reuse
+  the on created in the constructor. (Reported by plundra.)
+* Correctly report the reference ID from Cellsynt. Because of
+  a bug, the reference id was not available via the "id" key, as
+  specified in the documentation, but via the "uri" key. This is
+  now corrected, but for backwards compatibility, the uri will
+  work as well. This backwards compatibility change will be
+  removed in a future version. (Reported by plundra.)
+* Correctly report errors from the gateway provider. Because of
+  a bug, the error text was not available via the "message"
+  key, as specified in the documentation, but via the "uri" key.
+  This is now corrected, but for backwards compatibility, the uri
+  will work as well. This backwards compatibility change will be
+  removed in a future version.
+
 0.31 Released: 2011-05-24
 Oops, the 0.3 release was kinda hastey. The documentation contained
 a real password (changed now :-)) and this changelog was not really
