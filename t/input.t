@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use Test::More tests => 8;
+use Test::More tests => 6;
 use Net::SMS::Cellsynt;
 
 my $sms = Net::SMS::Cellsynt->new(
@@ -64,25 +64,4 @@ is(
 	$hash->{message},
 	"Don't run the example script as is",
 	"Don't run the example script as is (message)"
-);
-
-$sms = Net::SMS::Cellsynt->new(
-	username=>'username',
-	password=>'password',
-	origtype=>'alpha',
-	orig=>'test',
-	uri=>'http://example.org/'
-);
-
-$hash = $sms->send_sms(to=>'0046700123456', text=>'hej'),
-is(
-	$hash->{status},
-	'error-internal',
-	"Handling of SMS gateways that don't follow protocol (status)"
-);
-
-is(
-	$hash->{message},
-	"SMS gateway does not follow protocol (empty body)",
-	"Handling of SMS gateways that don't follow protocol (message)"
 );
