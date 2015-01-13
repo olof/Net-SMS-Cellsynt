@@ -207,12 +207,11 @@ sub send_sms {
 
 	my $body;
 
-	my $curl = new WWW::Curl::Easy;
 	open(my $curld, ">", \$body);
-	$curl->setopt(CURLOPT_URL, $uri);
-	$curl->setopt(CURLOPT_WRITEDATA, \$curld);
-	$curl->setopt(CURLOPT_FOLLOWLOCATION, 1);
-	$curl->perform();
+	$self->{curl}->setopt(CURLOPT_URL, $uri);
+	$self->{curl}->setopt(CURLOPT_WRITEDATA, \$curld);
+	$self->{curl}->setopt(CURLOPT_FOLLOWLOCATION, 1);
+	$self->{curl}->perform();
 	close $curld;
 
 	if(not defined $body) {
