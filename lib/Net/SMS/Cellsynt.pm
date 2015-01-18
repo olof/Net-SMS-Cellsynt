@@ -220,6 +220,13 @@ sub send_sms {
 	} elsif($body =~ /^OK: (.*)/) {
 		return {
 			status => 'ok',
+			id => $1,
+
+			# Becuase of a bug in previous versions, we didn't
+			# set an "id" key, but instead, the reference id
+			# was reported via the "uri" key. For backwards
+			# compatibility, we'll continue support uri as well,
+			# but this will be removed in a future version.
 			uri => $1,
 		};
 	} elsif($body=~/^Error: (.*)/) {
