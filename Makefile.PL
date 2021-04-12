@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
+my $vcs = 'https://github.com/olof/Net-SMS-Cellsynt';
+
 WriteMakefile (
 	NAME => 'Net::SMS::Cellsynt',
 	AUTHOR => 'Olof Johansson <zibri@cpan.org>',
@@ -18,4 +20,18 @@ WriteMakefile (
 	},
 
 	SIGN => 1,
+
+	META_MERGE => {
+		'meta-spec' => { version => 2 },
+		resources => {
+			repository => {
+				type => 'git',
+				url => "$vcs.git",
+				web => "$vcs",
+			},
+			bugtracker  => {
+				web    => "$vcs/issues",
+			},
+		},
+	},
 );
