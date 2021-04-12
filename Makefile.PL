@@ -7,7 +7,7 @@ my $vcs = 'https://github.com/olof/Net-SMS-Cellsynt';
 
 WriteMakefile (
 	NAME => 'Net::SMS::Cellsynt',
-	AUTHOR => 'Olof Johansson <zibri@cpan.org>',
+	AUTHOR => 'Olof Johansson <olof@cpan.org>',
 	LICENSE => 'perl',
 	ABSTRACT_FROM => 'lib/Net/SMS/Cellsynt.pm',
 	VERSION_FROM => 'lib/Net/SMS/Cellsynt.pm',

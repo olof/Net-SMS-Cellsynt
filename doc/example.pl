@@ -4,7 +4,7 @@
 #
 # This example uses hard coded authentication information.
 #
-# Copyright 2010, Olof Johansson <zibri@cpan.org>
+# Copyright 2010, Olof Johansson <olof@cpan.org>
 #
 # This program is free software; you can redistribute it and/or 
 # modify it under the same terms as Perl itself. 
